@@ -4,14 +4,14 @@ import { useId } from "react";
 import { nanoid } from "nanoid";
 import css from "./ContactForm.module.css";
 import { useDispatch } from "react-redux";
-import { addContact } from "../../redux/contactsSlice";
+import { addContact } from "../../redux/operations";
 
 export default function ContactForm() {
   const dispatch = useDispatch();
 
   const initialValues = {
     name: "",
-    number: "",
+    phone: "",
   };
 
   const contactSchema = Yup.object().shape({
@@ -19,7 +19,7 @@ export default function ContactForm() {
       .min(3, "Too Short!")
       .max(50, "Too Long!")
       .required("Required"),
-    number: Yup.string()
+    phone: Yup.string()
       .min(3, "Too Short!")
       .max(50, "Too Long!")
       .required("Required"),
@@ -29,9 +29,7 @@ export default function ContactForm() {
   const numberId = useId();
 
   function handleSubmit(values, actions) {
-    dispatch(
-      addContact({ id: nanoid(), name: values.name, number: values.number })
-    );
+    dispatch(addContact({ name: values.name, phone: values.phone }));
     actions.resetForm();
   }
   return (
@@ -56,12 +54,12 @@ export default function ContactForm() {
         <label htmlFor={numberId}>Number</label>
         <Field
           type="text"
-          name="number"
+          name="phone"
           id={numberId}
           className={css.inputField}
         ></Field>
         <ErrorMessage
-          name="number"
+          name="phone"
           component="span"
           className={css.errorMessage}
         ></ErrorMessage>
